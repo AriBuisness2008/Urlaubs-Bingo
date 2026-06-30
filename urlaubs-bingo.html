@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Urlaubs-Bingo – LucyVita</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; padding: 1rem; background: #F8F4EF; }
+  :root {
+    --lv-creme: #F8F4EF;
+    --lv-beige: #E6DED2;
+    --lv-braun: #7A6857;
+    --lv-dunkel: #4E4036;
+  }
+  .bingo-wrap {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--lv-creme);
+    border-radius: 16px;
+    padding: 1.5rem 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid var(--lv-beige);
+  }
+  .bingo-header { text-align: center; margin-bottom: 1.2rem; }
+  .bingo-header h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--lv-dunkel);
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+  .bingo-header p { color: var(--lv-braun); font-size: 12px; margin: 0; }
+  .bingo-header-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    margin-bottom: 5px;
+  }
+  .bingo-letter {
+    background: var(--lv-dunkel);
+    color: var(--lv-creme);
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 8px 4px;
+    border-radius: 8px;
+  }
+  .bingo-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    margin-bottom: 1rem;
+  }
+  .cell-wrap { perspective: 600px; min-height: 74px; cursor: pointer; }
+  .cell-inner {
+    position: relative;
+    width: 100%;
+    height: 74px;
+    transform-style: preserve-3d;
+    transition: transform 0.4s ease;
+  }
+  .cell-wrap.revealed .cell-inner { transform: rotateY(180deg); }
+  .cell-front, .cell-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  .cell-front {
+    background: white;
+    border: 1.5px solid var(--lv-beige);
+    flex-direction: column;
+    gap: 4px;
+  }
+  .cell-front .cell-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--lv-braun);
+  }
+  .cell-front .cell-hint { font-size: 9px; color: var(--lv-braun); opacity: 0.7; }
+  .cell-back {
+    background: var(--lv-beige);
+    border: 1.5px solid var(--lv-beige);
+    transform: rotateY(180deg);
+    font-size: 10px;
+    color: var(--lv-dunkel);
+    line-height: 1.3;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .cell-wrap.checked .cell-back {
+    background: var(--lv-braun);
+    border-color: var(--lv-braun);
+    color: var(--lv-creme);
+  }
+  .cell-wrap.bingo-line .cell-back {
+    background: var(--lv-dunkel);
+    border-color: var(--lv-dunkel);
+    color: var(--lv-creme);
+  }
+  .cell-wrap.free .cell-inner { transform: rotateY(180deg); }
+  .cell-wrap.free .cell-back {
+    background: var(--lv-dunkel);
+    color: var(--lv-creme);
+    font-size: 22px;
+    cursor: default;
+  }
+  .check-icon { font-size: 14px; display: none; }
+  .cell-wrap.checked .check-icon { display: block; }
+  .cell-hint-text { font-size: 9px; color: var(--lv-braun); opacity: 0.8; }
+  .cell-wrap.checked .cell-hint-text { display: none; }
+  .bingo-msg {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--lv-dunkel);
+    font-weight: 700;
+    min-height: 28px;
+    margin-bottom: 6px;
+  }
+  .progress-bar-wrap {
+    background: var(--lv-beige);
+    border-radius: 20px;
+    height: 6px;
+    margin: 0 auto 8px;
+    max-width: 300px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    background: var(--lv-braun);
+    height: 6px;
+    border-radius: 20px;
+    transition: width 0.3s;
+  }
+  .progress-label { text-align: center; font-size: 12px; color: var(--lv-braun); margin-bottom: 4px; }
+  .bingo-footer { display: flex; justify-content: center; margin-top: 0.8rem; }
+  .btn-reset {
+    font-family: 'DM Sans', sans-serif;
+    background: transparent;
+    border: 1.5px solid var(--lv-braun);
+    color: var(--lv-braun);
+    border-radius: 8px;
+    padding: 7px 18px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .btn-reset:hover { background: var(--lv-beige); }
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--lv-braun);
+    margin-bottom: 10px;
+  }
+  .legend span { display: flex; align-items: center; gap: 4px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+</style>
+</head>
+<body>
+
+<div class="bingo-wrap">
+  <div class="bingo-header">
+    <div style="font-size:34px;margin-bottom:6px;">🐾</div>
+    <h1>Urlaubs-Bingo</h1>
+    <p style="margin-bottom:10px;">1× klicken = Aufgabe aufdecken &nbsp;·&nbsp; 2× klicken = erledigt</p>
+  </div>
+
+  <div class="legend">
+    <span><span class="dot" style="background:white;border:1px solid #E6DED2;"></span> verborgen</span>
+    <span><span class="dot" style="background:#E6DED2;"></span> aufgedeckt</span>
+    <span><span class="dot" style="background:#7A6857;"></span> erledigt</span>
+  </div>
+
+  <div class="bingo-msg" id="msg"></div>
+  <div class="progress-label" id="prog-label">0 von 24 erledigt</div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:0%"></div></div>
+
+  <div style="margin-top:10px;">
+    <div class="bingo-header-row">
+      <div class="bingo-letter">B</div>
+      <div class="bingo-letter">I</div>
+      <div class="bingo-letter">N</div>
+      <div class="bingo-letter">G</div>
+      <div class="bingo-letter">O</div>
+    </div>
+    <div class="bingo-grid" id="grid"></div>
+  </div>
+
+  <div class="bingo-footer">
+    <button class="btn-reset" onclick="newCard()">Neue Karte mischen</button>
+  </div>
+</div>
+
+<script>
+/* ===================================================
+   AUFGABEN HIER ANPASSEN — einfach Text ändern
+   =================================================== */
+const TASKS = [
+  "Slalom durch die Beine am Wasser",
+  "High Five mit Meeresrauschen im Hintergrund",
+  "Spin auf einem Steg oder Brücke",
+  "Rückwärtsgehen auf einem Waldweg",
+  "Durch ein Tor aus zwei Stöcken laufen",
+  "Balance auf einem Baumstamm",
+  "Platz auf Entfernung im Wald",
+  "Selfie am Strand oder See",
+  "Foto mit einem Urlaubssouvenir",
+  "Hund schaut in die Kamera – ohne Leine",
+  "Foto: Hund & Mensch schauen in dieselbe Richtung",
+  "Video von einem Trick unterwegs",
+  "Platz unterm Campingtisch oder Restaurantstuhl",
+  "Warten vor dem Eisstand",
+  "Entspannt liegenbleiben beim Kaffeetrinken",
+  "Im Schatten eines Baumes relaxen – Foto",
+  "Pfoten freiwillig ins Wasser",
+  "Apportieren am Strand oder See",
+  "Durch flaches Wasser laufen",
+  "Schnüffeln auf neuer Wiese – 5 Min. frei",
+  "Neuen Trick an neuem Ort üben",
+  "Trick vor Fremden zeigen",
+  "Bekannte Aufgabe ohne Leckerlis schaffen",
+  "Etwas, das euren Urlaub besonders macht – ihr entscheidet!"
+];
+
+const LINES = [
+  [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],
+  [0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],[3,8,13,18,23],[4,9,14,19,24],
+  [0,6,12,18,24],[4,8,12,16,20]
+];
+
+let state = [];
+let taskMap = [];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function newCard() {
+  state = new Array(25).fill(0);
+  state[12] = 2;
+  taskMap = shuffle(TASKS);
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  document.getElementById('msg').textContent = '';
+
+  for (let i = 0; i < 25; i++) {
+    const wrap = document.createElement('div');
+    wrap.className = 'cell-wrap' + (i === 12 ? ' free' : '');
+    wrap.dataset.index = i;
+
+    const inner = document.createElement('div');
+    inner.className = 'cell-inner';
+
+    const front = document.createElement('div');
+    front.className = 'cell-front';
+    front.innerHTML = `<span class="cell-num">${i === 12 ? '' : (i < 12 ? i+1 : i)}</span><span class="cell-hint">${i === 12 ? '' : 'antippen'}</span>`;
+
+    const back = document.createElement('div');
+    back.className = 'cell-back';
+    if (i === 12) {
+      back.textContent = '🐾';
+    } else {
+      back.innerHTML = `<span>${taskMap[i < 12 ? i : i-1]}</span><span class="check-icon">✓</span><span class="cell-hint-text">nochmal tippen = erledigt</span>`;
+    }
+
+    inner.appendChild(front);
+    inner.appendChild(back);
+    wrap.appendChild(inner);
+    if (i !== 12) wrap.addEventListener('click', () => handleClick(i, wrap));
+    grid.appendChild(wrap);
+  }
+  updateProgress();
+}
+
+function handleClick(i, wrap) {
+  if (state[i] === 0) {
+    state[i] = 1;
+    wrap.classList.add('revealed');
+  } else if (state[i] === 1) {
+    state[i] = 2;
+    wrap.classList.add('checked');
+    updateProgress();
+    checkBingo();
+  } else {
+    state[i] = 1;
+    wrap.classList.remove('checked');
+    wrap.classList.remove('bingo-line');
+    updateProgress();
+    document.getElementById('msg').textContent = '';
+    recheckBingo();
+  }
+}
+
+function updateProgress() {
+  const done = state.filter(s => s === 2).length - 1;
+  const pct = Math.round((Math.max(0, done) / 24) * 100);
+  document.getElementById('prog-bar').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = Math.max(0, done) + ' von 24 erledigt';
+}
+
+function checkBingo() {
+  const wraps = document.getElementById('grid').querySelectorAll('.cell-wrap');
+  let bingo = false;
+  for (const line of LINES) {
+    if (line.every(i => state[i] === 2)) {
+      bingo = true;
+      line.forEach(i => wraps[i].classList.add('bingo-line'));
+    }
+  }
+  if (bingo) document.getElementById('msg').textContent = 'BINGO! Wunderbar!';
+}
+
+function recheckBingo() {
+  document.getElementById('grid').querySelectorAll('.cell-wrap').forEach(w => w.classList.remove('bingo-line'));
+  checkBingo();
+}
+
+newCard();
+</script>
+</body>
+</html>
