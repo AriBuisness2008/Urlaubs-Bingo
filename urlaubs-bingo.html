@@ -6,38 +6,49 @@
 <title>Urlaubs-Bingo – LucyVita</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  body { margin: 0; padding: 1rem; background: #F8F4EF; }
+  :root {
+    --bl-hell: #EEF7FA;
+    --bl-mittel: #4BB8C0;
+    --bl-dunkel: #1E6B8A;
+    --bl-tief: #0D4A63;
+    --sand: #F0D9A8;
+    --weiss: #ffffff;
+  }
+  body { margin: 0; padding: 0 0 2rem 0; background: #EEF7FA; font-family: 'DM Sans', sans-serif; }
   .bingo-header-img {
     width: 100%;
-    max-width: 600px;
-    border-radius: 14px 14px 0 0;
+    max-width: 620px;
+    border-radius: 16px 16px 0 0;
     display: block;
     margin: 0 auto;
   }
-  :root {
-    --lv-creme: #F8F4EF;
-    --lv-beige: #E6DED2;
-    --lv-braun: #7A6857;
-    --lv-dunkel: #4E4036;
-  }
   .bingo-wrap {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--lv-creme);
-    border-radius: 16px;
-    padding: 1.5rem 1rem;
-    max-width: 600px;
+    background: var(--weiss);
+    border-radius: 0 0 16px 16px;
+    padding: 1.2rem 1rem 1.6rem;
+    max-width: 620px;
     margin: 0 auto;
-    border: 1px solid var(--lv-beige);
+    border: 1px solid var(--bl-mittel);
+    border-top: none;
   }
-  .bingo-header { text-align: center; margin-bottom: 1.2rem; }
-  .bingo-header h1 {
-    font-family: 'Playfair Display', serif;
-    color: var(--lv-dunkel);
-    font-size: 26px;
-    font-weight: 700;
-    margin: 0 0 4px;
+  .bingo-subtitle {
+    text-align: center;
+    color: var(--bl-dunkel);
+    font-size: 12px;
+    margin: 0 0 10px;
   }
-  .bingo-header p { color: var(--lv-braun); font-size: 12px; margin: 0; }
+  .intro-note {
+    background: var(--bl-hell);
+    border: 1px solid var(--bl-mittel);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--bl-tief);
+    text-align: center;
+    margin: 0 auto 12px;
+    max-width: 480px;
+    line-height: 1.5;
+  }
   .bingo-header-row {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -45,8 +56,8 @@
     margin-bottom: 5px;
   }
   .bingo-letter {
-    background: var(--lv-dunkel);
-    color: var(--lv-creme);
+    background: var(--bl-tief);
+    color: var(--weiss);
     text-align: center;
     font-family: 'Playfair Display', serif;
     font-size: 18px;
@@ -84,8 +95,8 @@
     box-sizing: border-box;
   }
   .cell-front {
-    background: white;
-    border: 1.5px solid var(--lv-beige);
+    background: var(--bl-hell);
+    border: 1.5px solid var(--bl-mittel);
     flex-direction: column;
     gap: 4px;
   }
@@ -93,110 +104,122 @@
     font-family: 'Playfair Display', serif;
     font-size: 20px;
     font-weight: 700;
-    color: var(--lv-braun);
+    color: var(--bl-dunkel);
   }
-  .cell-front .cell-hint { font-size: 9px; color: var(--lv-braun); opacity: 0.7; }
+  .cell-front .cell-hint { font-size: 9px; color: var(--bl-dunkel); opacity: 0.7; }
   .cell-back {
-    background: var(--lv-beige);
-    border: 1.5px solid var(--lv-beige);
+    background: var(--sand);
+    border: 1.5px solid #D4BA80;
     transform: rotateY(180deg);
-    font-size: 10px;
-    color: var(--lv-dunkel);
+    font-size: 9.5px;
+    color: var(--bl-tief);
     line-height: 1.3;
     flex-direction: column;
     gap: 5px;
   }
   .cell-wrap.checked .cell-back {
-    background: var(--lv-braun);
-    border-color: var(--lv-braun);
-    color: var(--lv-creme);
+    background: var(--bl-mittel);
+    border-color: var(--bl-mittel);
+    color: var(--weiss);
   }
   .cell-wrap.bingo-line .cell-back {
-    background: var(--lv-dunkel);
-    border-color: var(--lv-dunkel);
-    color: var(--lv-creme);
+    background: var(--bl-tief);
+    border-color: var(--bl-tief);
+    color: var(--weiss);
   }
   .cell-wrap.free .cell-inner { transform: rotateY(180deg); }
   .cell-wrap.free .cell-back {
-    background: var(--lv-dunkel);
-    color: var(--lv-creme);
-    font-size: 22px;
+    background: var(--bl-tief);
+    color: var(--weiss);
+    font-size: 26px;
     cursor: default;
   }
   .check-icon { font-size: 14px; display: none; }
   .cell-wrap.checked .check-icon { display: block; }
-  .cell-hint-text { font-size: 9px; color: var(--lv-braun); opacity: 0.8; }
+  .cell-hint-text { font-size: 8.5px; color: var(--bl-tief); opacity: 0.7; }
   .cell-wrap.checked .cell-hint-text { display: none; }
   .bingo-msg {
     text-align: center;
     font-family: 'Playfair Display', serif;
     font-size: 20px;
-    color: var(--lv-dunkel);
+    color: var(--bl-tief);
     font-weight: 700;
     min-height: 28px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
   .progress-bar-wrap {
-    background: var(--lv-beige);
+    background: var(--bl-hell);
     border-radius: 20px;
-    height: 6px;
-    margin: 0 auto 8px;
+    height: 7px;
+    margin: 0 auto 6px;
     max-width: 300px;
     overflow: hidden;
+    border: 1px solid var(--bl-mittel);
   }
   .progress-bar {
-    background: var(--lv-braun);
-    height: 6px;
+    background: var(--bl-mittel);
+    height: 7px;
     border-radius: 20px;
     transition: width 0.3s;
   }
-  .progress-label { text-align: center; font-size: 12px; color: var(--lv-braun); margin-bottom: 4px; }
+  .progress-label { text-align: center; font-size: 12px; color: var(--bl-dunkel); margin-bottom: 6px; }
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--bl-dunkel);
+    margin-bottom: 10px;
+  }
+  .legend span { display: flex; align-items: center; gap: 4px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
   .bingo-footer { display: flex; justify-content: center; margin-top: 0.8rem; }
   .btn-reset {
     font-family: 'DM Sans', sans-serif;
     background: transparent;
-    border: 1.5px solid var(--lv-braun);
-    color: var(--lv-braun);
+    border: 1.5px solid var(--bl-dunkel);
+    color: var(--bl-dunkel);
     border-radius: 8px;
     padding: 7px 18px;
     font-size: 13px;
     cursor: pointer;
     font-weight: 500;
   }
-  .btn-reset:hover { background: var(--lv-beige); }
-  .legend {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
+  .btn-reset:hover { background: var(--bl-hell); }
+  .submit-note {
+    background: var(--bl-tief);
+    color: var(--weiss);
+    border-radius: 10px;
+    padding: 10px 14px;
     font-size: 11px;
-    color: var(--lv-braun);
-    margin-bottom: 10px;
+    text-align: center;
+    margin-top: 14px;
+    line-height: 1.7;
   }
-  .legend span { display: flex; align-items: center; gap: 4px; }
-  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 </style>
 </head>
 <body>
 
-<img src="15.png" alt="Urlaubs-Bingo mit Hund am Strand" class="bingo-header-img">
-<div class="bingo-wrap" style="border-radius: 0 0 16px 16px; margin-top: 0;">
-  <div class="bingo-header">
-    <div style="font-size:34px;margin-bottom:6px;">🐾</div>
-    <h1>Urlaubs-Bingo</h1>
-    <p style="margin-bottom:10px;">1× klicken = Aufgabe aufdecken &nbsp;·&nbsp; 2× klicken = erledigt</p>
-  </div>
+<div style="max-width:620px;margin:1rem auto 0;">
+  <img src="15.png" alt="Urlaubs-Bingo mit Hund am Strand" class="bingo-header-img">
+  <div class="bingo-wrap">
 
-  <div class="legend">
-    <span><span class="dot" style="background:white;border:1px solid #E6DED2;"></span> verborgen</span>
-    <span><span class="dot" style="background:#E6DED2;"></span> aufgedeckt</span>
-    <span><span class="dot" style="background:#7A6857;"></span> erledigt</span>
-  </div>
+    <p class="bingo-subtitle">1× klicken = Aufgabe aufdecken &nbsp;·&nbsp; 2× klicken = erledigt</p>
 
-  <div class="bingo-msg" id="msg"></div>
-  <div class="progress-label" id="prog-label">0 von 24 erledigt</div>
-  <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:0%"></div></div>
+    <div class="intro-note">
+      Kein Urlaub geplant? Kein Problem! Schau dich einfach in deiner Umgebung um — der Park, der See in der Nähe, eine schöne Ecke in deiner Stadt. Urlaubsfeeling ist eine Frage des Blicks, nicht des Reisens. Mach mit, wo immer du gerade bist!
+    </div>
 
-  <div style="margin-top:10px;">
+    <div class="legend">
+      <span><span class="dot" style="background:#EEF7FA;border:1px solid #4BB8C0;"></span> verborgen</span>
+      <span><span class="dot" style="background:#F0D9A8;border:1px solid #D4BA80;"></span> aufgedeckt</span>
+      <span><span class="dot" style="background:#4BB8C0;"></span> erledigt</span>
+    </div>
+
+    <div class="bingo-msg" id="msg"></div>
+    <div class="progress-label" id="prog-label">0 von 24 erledigt</div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="prog-bar" style="width:0%"></div></div>
+
     <div class="bingo-header-row">
       <div class="bingo-letter">B</div>
       <div class="bingo-letter">I</div>
@@ -205,10 +228,17 @@
       <div class="bingo-letter">O</div>
     </div>
     <div class="bingo-grid" id="grid"></div>
-  </div>
 
-  <div class="bingo-footer">
-    <button class="btn-reset" onclick="newCard()">Neue Karte mischen</button>
+    <div class="bingo-footer">
+      <button class="btn-reset" onclick="newCard()">Neue Karte mischen</button>
+    </div>
+
+    <div class="submit-note">
+      Schick mir deine Fotos und Videos einfach laufend per WhatsApp — du musst nicht warten bis du fertig bist!<br>
+      Bei <strong>5 erledigten Aufgaben</strong> gibt es eine Urkunde &nbsp;·&nbsp; bei <strong>15 Aufgaben</strong> zusätzlich eine kleine Überraschung per Post.<br>
+      Einsendeschluss: 31. August 2026
+    </div>
+
   </div>
 </div>
 
@@ -217,30 +247,30 @@
    AUFGABEN HIER ANPASSEN — einfach Text ändern
    =================================================== */
 const TASKS = [
-  "Slalom durch die Beine am Wasser",
-  "High Five mit Meeresrauschen im Hintergrund",
-  "Spin auf einem Steg oder Brücke",
-  "Rückwärtsgehen auf einem Waldweg",
-  "Durch ein Tor aus zwei Stöcken laufen",
-  "Balance auf einem Baumstamm",
-  "Platz auf Entfernung im Wald",
-  "Selfie am Strand oder See",
-  "Foto mit einem Urlaubssouvenir",
-  "Hund schaut in die Kamera – ohne Leine",
-  "Foto: Hund & Mensch schauen in dieselbe Richtung",
-  "Video von einem Trick unterwegs",
-  "Platz unterm Campingtisch oder Restaurantstuhl",
-  "Warten vor dem Eisstand",
-  "Entspannt liegenbleiben beim Kaffeetrinken",
-  "Im Schatten eines Baumes relaxen – Foto",
-  "Pfoten freiwillig ins Wasser",
-  "Apportieren am Strand oder See",
-  "Durch flaches Wasser laufen",
-  "Schnüffeln auf neuer Wiese – 5 Min. frei",
-  "Neuen Trick an neuem Ort üben",
-  "Trick vor Fremden zeigen",
-  "Bekannte Aufgabe ohne Leckerlis schaffen",
-  "Etwas, das euren Urlaub besonders macht – ihr entscheidet!"
+  "Baumstamm mit Drehung: Lass deinen Hund drauflaufen — am Ende umdrehen und wieder zurück. Die Drehung oben ist der knifflige Part!",
+  "Hinterpfoten hoch – Urlaubsedition: Such dir etwas Typisches für deinen Ort — eine Strandmauer, einen Holzpfahl, einen Stein. Hinterpfoten drauf, 3 Sekunden stehen bleiben. Foto nicht vergessen!",
+  "Tatort-Challenge: Lass deinen Hund sich seitlich hinlegen und lege mindestens 5 Leckerlis um ihn herum — Impulskontrolle pur. Wer macht das coolste Tatortfoto?",
+  "Foto-Model an deinem Lieblingsort: Fotografiere deinen Hund wie eine echte Werbeaufnahme — zeig, warum man bei euch Urlaub machen sollte!",
+  "Wurzelpfad: Such einen Baum mit vielen Wurzeln. Fuß für Fuß darüber — nicht springen, nicht hetzen. Koordination und Konzentration pur.",
+  "Euer Lieblingstrick – ganz besonders: Zeig uns deinen Lieblingstrick an einem besonderen Ort. Schreib kurz dazu, warum genau dieser Trick euer Favorit ist.",
+  "Seitwärts mit erhöhten Vorderpfoten: Vorderpfoten auf einen Bordstein oder eine Bank, Hinterpfoten bleiben unten — und dann ein paar Schritte seitwärts.",
+  "Wasserwege – Schritt und Trab: Such eine flache Stelle, Wasser max. bis zum Sprunggelenk (der Knick am Hinterbein). 5–10 Meter im Schritt, dann im Trab — und Foto!",
+  "Unterm-Stuhl-Geheimversteck: Geh in einen Biergarten oder ein Restaurant. Lass deinen Hund zwischen deine Beine und den Stuhl kriechen und ruhig liegenbleiben — egal wer vorbeikommt.",
+  "Brücken-Mut: Such eine Brücke, einen Steg oder eine wackelige Holzkonstruktion. Bleib ruhig an seiner Seite — deine Gelassenheit vermittelt ihm jede Menge Sicherheit.",
+  "Schnüffel-Schatzsuche: Versteck Leckerlis in einem hohlen Baumstamm, einer Astgabel oder zwischen Steinen — erhöht, nicht direkt am Boden. Dann auf die Suche!",
+  "Aufgabe 12 – folgt in Kürze",
+  "Aufgabe 13 – folgt in Kürze",
+  "Aufgabe 14 – folgt in Kürze",
+  "Aufgabe 15 – folgt in Kürze",
+  "Aufgabe 16 – folgt in Kürze",
+  "Aufgabe 17 – folgt in Kürze",
+  "Aufgabe 18 – folgt in Kürze",
+  "Aufgabe 19 – folgt in Kürze",
+  "Aufgabe 20 – folgt in Kürze",
+  "Aufgabe 21 – folgt in Kürze",
+  "Aufgabe 22 – folgt in Kürze",
+  "Aufgabe 23 – folgt in Kürze",
+  "Aufgabe 24 – folgt in Kürze"
 ];
 
 const LINES = [
@@ -249,8 +279,7 @@ const LINES = [
   [0,6,12,18,24],[4,8,12,16,20]
 ];
 
-let state = [];
-let taskMap = [];
+let state = [], taskMap = [];
 
 function shuffle(arr) {
   const a = [...arr];
@@ -262,36 +291,21 @@ function shuffle(arr) {
 }
 
 function newCard() {
-  state = new Array(25).fill(0);
-  state[12] = 2;
+  state = new Array(25).fill(0); state[12] = 2;
   taskMap = shuffle(TASKS);
   const grid = document.getElementById('grid');
   grid.innerHTML = '';
   document.getElementById('msg').textContent = '';
-
   for (let i = 0; i < 25; i++) {
     const wrap = document.createElement('div');
     wrap.className = 'cell-wrap' + (i === 12 ? ' free' : '');
-    wrap.dataset.index = i;
-
-    const inner = document.createElement('div');
-    inner.className = 'cell-inner';
-
-    const front = document.createElement('div');
-    front.className = 'cell-front';
+    const inner = document.createElement('div'); inner.className = 'cell-inner';
+    const front = document.createElement('div'); front.className = 'cell-front';
     front.innerHTML = `<span class="cell-num">${i === 12 ? '' : (i < 12 ? i+1 : i)}</span><span class="cell-hint">${i === 12 ? '' : 'antippen'}</span>`;
-
-    const back = document.createElement('div');
-    back.className = 'cell-back';
-    if (i === 12) {
-      back.textContent = '🐾';
-    } else {
-      back.innerHTML = `<span>${taskMap[i < 12 ? i : i-1]}</span><span class="check-icon">✓</span><span class="cell-hint-text">nochmal tippen = erledigt</span>`;
-    }
-
-    inner.appendChild(front);
-    inner.appendChild(back);
-    wrap.appendChild(inner);
+    const back = document.createElement('div'); back.className = 'cell-back';
+    if (i === 12) { back.innerHTML = '🐾'; }
+    else { back.innerHTML = `<span>${taskMap[i < 12 ? i : i-1]}</span><span class="check-icon">✓</span><span class="cell-hint-text">nochmal tippen = erledigt</span>`; }
+    inner.appendChild(front); inner.appendChild(back); wrap.appendChild(inner);
     if (i !== 12) wrap.addEventListener('click', () => handleClick(i, wrap));
     grid.appendChild(wrap);
   }
@@ -299,39 +313,22 @@ function newCard() {
 }
 
 function handleClick(i, wrap) {
-  if (state[i] === 0) {
-    state[i] = 1;
-    wrap.classList.add('revealed');
-  } else if (state[i] === 1) {
-    state[i] = 2;
-    wrap.classList.add('checked');
-    updateProgress();
-    checkBingo();
-  } else {
-    state[i] = 1;
-    wrap.classList.remove('checked');
-    wrap.classList.remove('bingo-line');
-    updateProgress();
-    document.getElementById('msg').textContent = '';
-    recheckBingo();
-  }
+  if (state[i] === 0) { state[i] = 1; wrap.classList.add('revealed'); }
+  else if (state[i] === 1) { state[i] = 2; wrap.classList.add('checked'); updateProgress(); checkBingo(); }
+  else { state[i] = 1; wrap.classList.remove('checked', 'bingo-line'); updateProgress(); document.getElementById('msg').textContent = ''; recheckBingo(); }
 }
 
 function updateProgress() {
   const done = state.filter(s => s === 2).length - 1;
-  const pct = Math.round((Math.max(0, done) / 24) * 100);
-  document.getElementById('prog-bar').style.width = pct + '%';
-  document.getElementById('prog-label').textContent = Math.max(0, done) + ' von 24 erledigt';
+  document.getElementById('prog-bar').style.width = Math.round((Math.max(0,done)/24)*100) + '%';
+  document.getElementById('prog-label').textContent = Math.max(0,done) + ' von 24 erledigt';
 }
 
 function checkBingo() {
   const wraps = document.getElementById('grid').querySelectorAll('.cell-wrap');
   let bingo = false;
   for (const line of LINES) {
-    if (line.every(i => state[i] === 2)) {
-      bingo = true;
-      line.forEach(i => wraps[i].classList.add('bingo-line'));
-    }
+    if (line.every(i => state[i] === 2)) { bingo = true; line.forEach(i => wraps[i].classList.add('bingo-line')); }
   }
   if (bingo) document.getElementById('msg').textContent = 'BINGO! Wunderbar!';
 }
